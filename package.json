@@ -13,6 +13,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.0",
     "node-sass-middleware": "0.9.8",
+    "ramda": "^0.25.0",
     "serve-favicon": "~2.4.5"
   }
 }

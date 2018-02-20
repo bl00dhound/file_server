@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  form.login-form.rounded.mx-auto.p-4
+    .form-group
+      label
+        | Login:
+      input#username.form-control(placeholder='Enter login')
+    .form-group
+      label
+        | Password:
+      input#password.form-control(type='password')
+    .btn.btn-primary
+        | login

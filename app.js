@@ -6,9 +6,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const sassMiddleware = require('node-sass-middleware');
 
-const index = require('./routes/index');
-const users = require('./routes/users');
-
 const app = express();
 
 // view engine setup
@@ -28,8 +25,9 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/', require('./routes/index'));
+app.use('/login', require('./routes/login'));
+app.use('/users', require('./routes/users'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
