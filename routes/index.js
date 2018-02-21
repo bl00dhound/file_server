@@ -10,7 +10,7 @@ const storageDIR = path.join(__dirname, '..', 'storage');
 router.get('/', (req, res, next) =>
   fs.readdir(storageDIR, (err, files) => {
     if (err) return res.render('index', { files: 'error read folder' });
-    return res.render('index', { filter: R.filter(R.equals('.gitkeep'))(files) })
+    return res.render('index', { files: R.reject(R.equals('.gitkeep'))(files) })
 
   })
 );

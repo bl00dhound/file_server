@@ -1,8 +1,27 @@
 extends layout
 
 block content
-    h1 #{title}
-    h3 Upload file
-    p #{files}
-
+    nav.navbar.navbar-light.bg-faded.px-5.mb-3
+        h1.navbar-brand.mb-0 Smarty files:
+    .container.mb-3
+        .row
+            .col-md-2
+                input#file.file_input(type='file', name='file')
+                label(for='file') Choose a file
+            .col-md-8
+                .file_info
+                    #filename.file_name
+                    #filesize.file_size
+            .col-md-2
+                .btn.btn-success
+                    | Upload
+    .container.files.mb-5
+        each file in files
+            .row.py-2
+                .col-md-10
+                    a(href='../storage/#{file}')
+                        | #{file}
+                .col-md-1
+                    
+                .col-md-1
 
