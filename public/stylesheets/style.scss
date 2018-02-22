@@ -35,14 +35,10 @@ ol, ul, li {
 }
 
 .file_input + label {
-  display: inline-block;
-}
-
-.file_input + label {
   background-color: #0275d8;
   padding: 8px 10px;
   color: #fff;
-  border-radius: 3px;
+  border-radius: 5px;
   cursor: pointer;
   opacity: .8;
   transition: opacity .3s ease-out;
@@ -58,5 +54,22 @@ ol, ul, li {
 
 .file_input + label * {
   pointer-events: none;
+}
+
+.file_info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 7px;
+
+  .file_name {
+
+  }
+  .file_size {
+
+  }
+}
+
+#upload {
+  cursor: pointer;
 }
 
