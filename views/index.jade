@@ -2,7 +2,7 @@ extends layout
 
 block content
     nav.navbar.navbar-light.bg-faded.px-5.mb-3
-        h1.navbar-brand.mb-0 Smarty files:
+        h1.title.navbar-brand.mb-0 Smarty files:
     .container.mb-3
         .row
             .col-sm-3
@@ -18,10 +18,32 @@ block content
     .container.files.mb-5
         each file in files
             .row.py-2
-                .col-sm-10
-                    a(href='../storage/#{file}')
+                .col-sm-11
+                    a(href='http://localhost:3000/storage/#{file}' download)
                         | #{file}
                 .col-sm-1
-
-                .col-sm-1
-
+                    .delete_button(id='#{file}')
+                        .fa.fa-trash.fa-lg
+    #fileModal.modal.fade(
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+    )
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title
+                    button.close(
+                        type='button'
+                        data-dismiss='modal'
+                        aria-label='Close'
+                    )
+                        span(aria-hidden='true') &times;
+                .modal-body
+                    | some modal body
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal')
+                        | Close
+                    button.btn.btn-primary(type='button')
+                        | Save changes

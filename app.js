@@ -30,6 +30,7 @@ app.use((req, res, next) => {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/storage', express.static(path.join(__dirname, 'storage'), { dotfiles: 'allow' }));
 app.use('/api', require('./routes/api'));
 app.use('/', require('./routes/index'));
 app.use('/login', require('./routes/login'));

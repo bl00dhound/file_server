@@ -1,12 +1,10 @@
-body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
-
-a {
-  color: #00B7FF; }
-
 ol, ul, li {
   margin: 0;
   padding: 0; }
+
+h1.title.navbar-brand {
+  font-size: 30px;
+  color: #e28b2c; }
 
 .login-form {
   border: 1px solid #cccccc;
@@ -26,25 +24,21 @@ ol, ul, li {
   overflow: hidden;
   position: absolute;
   z-index: -1; }
-
-.file_input + label {
-  background-color: #0275d8;
-  padding: 8px 10px;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-  opacity: .8;
-  transition: opacity .3s ease-out; }
-
-.file_input + label:hover {
-  opacity: 1; }
-
-.file_input:focus + label {
-  outline: 1px dotted #000;
-  outline: -webkit-focus-ring-color auto 5px; }
-
-.file_input + label * {
-  pointer-events: none; }
+  .file_input + label {
+    background-color: #0275d8;
+    padding: 8px 10px;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: .8;
+    transition: opacity .3s ease-out; }
+    .file_input + label:hover {
+      opacity: 1; }
+  .file_input:focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px; }
+  .file_input + label * {
+    pointer-events: none; }
 
 .file_info {
   display: flex;
@@ -53,5 +47,13 @@ ol, ul, li {
 
 #upload {
   cursor: pointer; }
+
+.delete_button {
+  color: darkred;
+  cursor: pointer;
+  opacity: .7;
+  transition: opacity .3s ease-out; }
+  .delete_button:hover {
+    opacity: 1; }
 
 /*# sourceMappingURL=style.css.map */

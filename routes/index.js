@@ -8,18 +8,18 @@ const router = express.Router();
 
 const storageDIR = path.join(__dirname, '..', 'storage');
 
-// const multerStorage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, storageDIR);
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, file.fieldname)
-//     }
-// });
+const multerStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, storageDIR);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+});
 
-// const upload = multer({ storage: multerStorage });
+const upload = multer({ storage: multerStorage });
 
-const upload = multer({ dest: 'storage/' });
+// const upload = multer({ dest: 'storage/' });
 
 /* GET home page. */
 router.get('/', (req, res, next) =>
@@ -29,7 +29,7 @@ router.get('/', (req, res, next) =>
   })
 );
 
-router.post('/file', (req, res, next) => {
+router.post('/file', upload.single('file'), (req, res, next) => {
     console.log(req);
     res.sendStatus(200);
 });
