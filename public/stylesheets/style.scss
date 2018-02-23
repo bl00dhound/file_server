@@ -8,7 +8,6 @@ ol, ul, li {
 
 h1.title.navbar-brand {
   font-size: 30px;
-  color: #e28b2c;
 }
 
 .login-form {
@@ -72,7 +71,9 @@ h1.title.navbar-brand {
 #upload {
   cursor: pointer;
 }
+
 .delete_button {
+  position: relative;
   color: darkred;
   cursor: pointer;
   opacity: .7;
@@ -81,5 +82,34 @@ h1.title.navbar-brand {
   &:hover {
     opacity: 1;
   }
-}
 
+  .delete_confirm {
+    position: absolute;
+    width: 122px;
+    top: -70px;
+    right: 34px;
+    display: none;
+    background: white;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    padding: 5px 10px;
+
+    .confirm_header {
+      color: black;
+    }
+    .confirm_btns {
+      .btn.btn-light {
+        opacity: .4;
+        &:hover {
+          opacity: 1;
+        }
+      }
+      .fa-times {
+        color: #0275d8;
+      }
+    }
+  }
+  .show {
+    display: block;
+  }
+}

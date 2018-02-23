@@ -23,27 +23,11 @@ block content
                         | #{file}
                 .col-sm-1
                     .delete_button(id='#{file}')
+                        .delete_confirm
+                            .confirm_header Are you sure?
+                            .confirm_btns
+                                .btn.btn-light(id='delete------#{file}')
+                                    .fa.fa-trash
+                                .btn.btn-light(id='close------#{file}')
+                                    .fa.fa-times
                         .fa.fa-trash.fa-lg
-    #fileModal.modal.fade(
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-    )
-        .modal-dialog(role='document')
-            .modal-content
-                .modal-header
-                    h5.modal-title
-                    button.close(
-                        type='button'
-                        data-dismiss='modal'
-                        aria-label='Close'
-                    )
-                        span(aria-hidden='true') &times;
-                .modal-body
-                    | some modal body
-                .modal-footer
-                    button.btn.btn-secondary(type='button' data-dismiss='modal')
-                        | Close
-                    button.btn.btn-primary(type='button')
-                        | Save changes

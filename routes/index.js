@@ -29,9 +29,13 @@ router.get('/', (req, res, next) =>
   })
 );
 
-router.post('/file', upload.single('file'), (req, res, next) => {
-    console.log(req);
+router.delete('/file', (req, res) => {
+    console.log(req)
     res.sendStatus(200);
+});
+
+router.post('/file', upload.single('file'), (req, res) => {
+    res.sendStatus(201);
 });
 
 module.exports = router;

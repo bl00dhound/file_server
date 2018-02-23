@@ -3,8 +3,7 @@ ol, ul, li {
   padding: 0; }
 
 h1.title.navbar-brand {
-  font-size: 30px;
-  color: #e28b2c; }
+  font-size: 30px; }
 
 .login-form {
   border: 1px solid #cccccc;
@@ -49,11 +48,32 @@ h1.title.navbar-brand {
   cursor: pointer; }
 
 .delete_button {
+  position: relative;
   color: darkred;
   cursor: pointer;
   opacity: .7;
   transition: opacity .3s ease-out; }
   .delete_button:hover {
     opacity: 1; }
+  .delete_button .delete_confirm {
+    position: absolute;
+    width: 122px;
+    top: -70px;
+    right: 34px;
+    display: none;
+    background: white;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    padding: 5px 10px; }
+    .delete_button .delete_confirm .confirm_header {
+      color: black; }
+    .delete_button .delete_confirm .confirm_btns .btn.btn-light {
+      opacity: .4; }
+      .delete_button .delete_confirm .confirm_btns .btn.btn-light:hover {
+        opacity: 1; }
+    .delete_button .delete_confirm .confirm_btns .fa-times {
+      color: #0275d8; }
+  .delete_button .show {
+    display: block; }
 
 /*# sourceMappingURL=style.css.map */
