@@ -30,8 +30,10 @@ router.get('/', (req, res, next) =>
 );
 
 router.delete('/file', (req, res) => {
-    console.log(req)
-    res.sendStatus(200);
+    fs.unlink(path.join(storageDIR, req.body.filename), err => {
+       if (err) return res.sendStatus(400);
+       return res.sendStatus(200);
+    });
 });
 
 router.post('/file', upload.single('file'), (req, res) => {

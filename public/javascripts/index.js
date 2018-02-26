@@ -5,19 +5,14 @@
     const uploadBtn = document.getElementById('upload');
     const deleteBtns = document.querySelectorAll('.delete_button');
     const removeFileBtns = document.querySelectorAll('[id^="delete------"]');
-    const closePopupBtns = document.querySelectorAll('[id^="close------"');
-
-    console.log(removeFileBtns)
-    console.log(closePopupBtns)
-
+    const closePopupBtns = document.querySelectorAll('[id^="close------"]');
 
 
     const reloadPage = () => document.location.reload(true);
     const showPopup = element => element.classList.add('show');
     const hidePopup = element => element.classList.remove('show');
-    const findId = R.compose(R.drop(1), R.split('------'), R.prop('id'));
+    const findId = R.compose(R.head, R.drop(1), R.split('------'), R.prop('id'));
 
-    const removeFile = element => () => console.log(element);
 
     const sendFileToBackend = (file) => {
         const formData = new FormData();
@@ -38,23 +33,33 @@
             url: 'http://localhost:3000/file',
             method: 'DELETE',
             data: { filename },
-            processData: false,
-            contentType: false,
             success: reloadPage,
             error: console.error,
         });
     };
 
     for (let i = 0; i < deleteBtns.length; i++) {
-        deleteBtns[i].addEventListener('click', function() {
+        deleteBtns[i].addEventListener('click', function(event) {
             showPopup(this.firstChild);
-            setTimeout(() => hidePopup(this.firstChild), 5000)
+            setTimeout(() => hidePopup(this.firstChild), 5000);
+            event.stopPropagation();
+        })
+    }
+
+    for (let i = 0; i < closePopupBtns.length; i++) {
+        closePopupBtns[i].addEventListener('click', function(event) {
+            const parent = document.getElementById(findId(this));
+            hidePopup(parent.firstChild);
+            console.log(parent.firstChild);
+
+            event.stopPropagation();
         })
     }
 
     for (let i = 0; i < removeFileBtns.length; i++) {
-        removeFileBtns[i].addEventListener('click', function () {
+        removeFileBtns[i].addEventListener('click', function (event) {
             deleteFileFromServer(findId(this));
+            event.stopPropagation();
         })
     }
 
