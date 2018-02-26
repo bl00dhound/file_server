@@ -1,0 +1,12 @@
+{
+  "ip": "localhost",
+  "domain": "localhost",
+  "port": "3000",
+  "salt": "this is a file_server salt",
+  "mongo": {
+    "connect": "127.0.0.1:27017",
+    "database": "file_server",
+    "user":"fileadmin",
+    "pwd":"dm1nfi!ese8ve"
+  }
+}
