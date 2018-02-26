@@ -7,36 +7,9 @@
     const removeFileBtns = document.querySelectorAll('[id^="delete------"]');
     const closePopupBtns = document.querySelectorAll('[id^="close------"]');
 
-
-    const reloadPage = () => document.location.reload(true);
     const showPopup = element => element.classList.add('show');
     const hidePopup = element => element.classList.remove('show');
     const findId = R.compose(R.head, R.drop(1), R.split('------'), R.prop('id'));
-
-
-    const sendFileToBackend = (file) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        $.ajax({
-            url: 'http://localhost:3000/file',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: reloadPage,
-            error: console.error,
-        });
-    };
-
-    const deleteFileFromServer = (filename) => {
-        $.ajax({
-            url: 'http://localhost:3000/file',
-            method: 'DELETE',
-            data: { filename },
-            success: reloadPage,
-            error: console.error,
-        });
-    };
 
     for (let i = 0; i < deleteBtns.length; i++) {
         deleteBtns[i].addEventListener('click', function(event) {
@@ -50,8 +23,6 @@
         closePopupBtns[i].addEventListener('click', function(event) {
             const parent = document.getElementById(findId(this));
             hidePopup(parent.firstChild);
-            console.log(parent.firstChild);
-
             event.stopPropagation();
         })
     }
@@ -69,11 +40,9 @@
         fileSize.innerText = `${fileObject.size} bytes`;
     });
 
-    uploadBtn.addEventListener('click', event => {
+    uploadBtn.addEventListener('click', () => {
         if (!fileInput.files[0]) return;
         sendFileToBackend(fileInput.files[0])
     });
-
-
 
 })();

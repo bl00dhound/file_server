@@ -31,9 +31,10 @@ app.use((req, res, next) => {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/', require('./routes/index'));
 app.use('/storage', express.static(path.join(__dirname, 'storage'), {dotfiles: 'allow'}));
 app.use('/api', require('./routes/api'));
-app.use('/', require('./routes/index'));
+app.use('/files', require('./routes/files'));
 app.use('/login', require('./routes/login'));
 
 // catch 404 and forward to error handler
