@@ -1,0 +1,5 @@
+use file_server
+db.createCollection('Users');
+db.createUser({user:"fileadmin","pwd":"dM1n_fi!eSe8ve",roles:[{role:"dbOwner",db:"file_server"}]});
+use admin
+db.system.version.update({},{ "_id" : "authSchema", "currentVersion" : 3 })
