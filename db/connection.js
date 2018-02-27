@@ -1,14 +1,39 @@
 const MongoClient = require('mongodb').MongoClient;
-const { connect, database, user, pwd } = require('../config/config').mongo;
 
-let connection = {};
 
-MongoClient.connect(`mongodb://${user}:${pwd}@${connect}/${database}`)
-    .then(db => {
-        console.log('Connection to MongoDb is successful.');
-        connection = db;
-    })
-    .catch(err => Promise.reject(err))
+// MongoClient.connect(`mongodb://${connect}/${database}`)
+//     .then(db => {
+//         console.log('Connection to MongoDb is successful.');
+//         connection = db;
+//     })
+//     .catch(err => Promise.reject(err))
+//
+// module.exports = connection;
 
-module.exports = connection;
 
+module.exports = (app, uri, opts) => {
+    if (typeof uri !== 'string')
+        throw new TypeError('Error: Unexpected mongodb connection url');
+
+    opts = opts || {};
+    const property = opts.property || 'db';
+
+    let connection;
+
+    return (req, res, next) => {
+        if (!connection) {
+            connection = MongoClient.connect(uri, opts);
+        }
+
+        connection
+            .then(db => {
+                req[property] = db;
+                app.set('mongodb', db);
+                next();
+            })
+            .catch(err => {
+                connection = undefined;
+                next(err);
+            })
+    }
+};

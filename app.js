@@ -8,6 +8,9 @@ const sassMiddleware = require('node-sass-middleware');
 
 const app = express();
 
+const connection = require('./db/connection');
+const { connectURL, database, user, pwd } = require('./config/config').mongo;
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -29,6 +32,9 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
+
+app.use(connection(app, `mongodb://${connectURL}/${database}`, {}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));

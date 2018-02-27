@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
-const mongo = require('../db/connection');
 
 const generateHash = () =>
     crypto.createHash('sha256')
@@ -17,9 +16,10 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const { username, password } = req.body;
+    const db = req.db;
 
+    console.log(db.collection('Users'))
     console.log(username, password)
-    console.log(mongo)
 
     res.sendStatus(200);
 });
