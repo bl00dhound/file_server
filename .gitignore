@@ -1,5 +1,6 @@
 node_modules/
-.idea
-storage
+storage/
 config/config.json
-/.idea/
+.idea/
+.vscode/
+.history/

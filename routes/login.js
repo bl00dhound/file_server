@@ -2,10 +2,7 @@ const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
 
-const generateHash = () =>
-    crypto.createHash('sha256')
-        .update((Math.random() + Date.now()).toString(36))
-        .digest('hex');
+const { checkUserCredentials } = require('../middlewares/auth');
 
 router.get('/', (req, res) => {
     console.log(req.body)
@@ -13,15 +10,7 @@ router.get('/', (req, res) => {
 
     res.render('login');
 });
-
-router.post('/', (req, res) => {
-    const { username, password } = req.body;
-    const db = req.db;
-
-    console.log(db.collection('Users'))
-    console.log(username, password)
-
-    res.sendStatus(200);
-});
+//5MSaq2yH3YRQoYqC
+router.post('/', checkUserCredentials);
 
 module.exports = router;

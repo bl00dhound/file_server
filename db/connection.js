@@ -1,16 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 
 
-// MongoClient.connect(`mongodb://${connect}/${database}`)
-//     .then(db => {
-//         console.log('Connection to MongoDb is successful.');
-//         connection = db;
-//     })
-//     .catch(err => Promise.reject(err))
-//
-// module.exports = connection;
-
-
 module.exports = (app, uri, opts) => {
     if (typeof uri !== 'string')
         throw new TypeError('Error: Unexpected mongodb connection url');
