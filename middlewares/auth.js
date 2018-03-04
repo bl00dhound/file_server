@@ -13,31 +13,50 @@ const encryptPassword = (password, salt) =>
         .digest('hex')
 
 const setNewTokens = (db, user, res) => {
-    return mongo(db.collection('Users'), 'insert',)
+    return mongo(db.collection('Users'), 'insert')
 }
         
 const checkUserCredentials = ({ db, body }, res) => 
-
     mongo(db.collection('Users'), 'findOne', { username: body.username })
         .then(user => {
             if (user.hash !== encryptPassword(body.password, salt)) throw Error('Autorization error');
-            // return setNewTokens(db, user, res);
+            return setNewTokens(db, user, res);
+
+
             console.log(user)
-            res.sendStatus(200)
+            return res.sendStatus(200)
         })
-        .catch(res.sendStatus(401))
+        .catch((err) => {
+            cosnole.error(err);
+            res.sendStatus(401);
+        })
 
-    // return Users.findOne({ username }, (err, user) => {
-    //     if (err || !user) return res.sendStatus(401);
-        
-    //     if (user.hash === encryptPassword(password, salt)) {
-    //         console.log(user)
-    //         return setNewTokens(user, res)
-    //     }
-
-    //     return res.sendStatus(401);
-    // })
 
 module.exports = {
     checkUserCredentials,
+}
+
+
+
+
+
+function createUser(db, body) {
+    return mongo(db.collection('Users'), 'insert', {
+        username: body.username,
+        hash: encryptPassword(body.password, salt),
+        auth_token: {
+            token: generateHash(),
+            expire: DateTime.local().plus({ month: 1 }).toISO(),
+        },
+        api_token: {
+            token: generateHash(),
+            expire: DateTime.local().plus({ month: 1 }).toISO()
+        }
+    })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
