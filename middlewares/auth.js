@@ -12,25 +12,49 @@ const encryptPassword = (password, salt) =>
         .update(password)
         .digest('hex')
 
-const setNewTokens = (db, user, res) => {
-    return mongo(db.collection('Users'), 'insert')
-}
+const setNewToken = (db, user, res) =>
+    mongo(
+        db.collection('Users'),
+        'updateOne',
+        { username: user.username },
+        {
+            $set : {
+                auth_token: {
+                    token: generateHash(),
+                    expire: DateTime.local().plus({ month: 1 }).toISO()
+                }
+            }
+        }
+    )
+        .then(result => {
+            console.log(result)
+            res.send(result)
+        })
+        .catch(err => {
+            console.error(err);
+            res.sendStatus(401);
+        })
+
+const checkExpired = (token_expire) =>
+    DateTime.local() >= DateTime.fromISO(token_expire);
         
 const checkUserCredentials = ({ db, body }, res) => 
+// createUser(db, body)
     mongo(db.collection('Users'), 'findOne', { username: body.username })
         .then(user => {
             if (user.hash !== encryptPassword(body.password, salt)) throw Error('Autorization error');
-            return setNewTokens(db, user, res);
 
+            if (checkExpired(user.auth_token.expire)) {
+                return setNewToken(db , user, res)
+            }
 
             console.log(user)
             return res.sendStatus(200)
         })
         .catch((err) => {
-            cosnole.error(err);
+            console.error(err);
             res.sendStatus(401);
         })
-
 
 module.exports = {
     checkUserCredentials,
