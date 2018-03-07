@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const R = require('ramda');
 const { DateTime } = require('luxon');
 const { salt } = require('../config/config.json');
 const mongo = require('../db/mongo');
@@ -12,19 +13,25 @@ const encryptPassword = (password, salt) =>
         .update(password)
         .digest('hex')
 
+const nowPlusMonth = () => DateTime.local().plus({ month: 1 }).toISO()
+
+const checkExpired = (token_expire) =>
+    DateTime.local() >= DateTime.fromJSDate(token_expire)
+
 const setNewToken = (db, user, res) =>
     mongo(
         db.collection('Users'),
-        'updateOne',
+        'findOneAndUpdate',
         { username: user.username },
         {
             $set : {
                 auth_token: {
                     token: generateHash(),
-                    expire: DateTime.local().plus({ month: 1 }).toISO()
+                    expire: new Date(nowPlusMonth()),
                 }
             }
-        }
+        },
+        { new: true }
     )
         .then(result => {
             console.log(result)
@@ -35,8 +42,14 @@ const setNewToken = (db, user, res) =>
             res.sendStatus(401);
         })
 
-const checkExpired = (token_expire) =>
-    DateTime.local() >= DateTime.fromISO(token_expire);
+const decryptCredentials = ({ headers, body }, res, next) => {
+    const base64String = R.compose(R.last, R.split(' '), R.prop('authorization'))(headers);
+    if (!base64String) return res.send(401);
+    const [ username, password ] = R.compose(R.split(':'), R.toString)(new Buffer(base64String, 'base64'))
+    body.username = username;
+    body.password = password;
+    next();
+}
         
 const checkUserCredentials = ({ db, body }, res) => 
 // createUser(db, body)
@@ -57,24 +70,25 @@ const checkUserCredentials = ({ db, body }, res) =>
         })
 
 module.exports = {
+    decryptCredentials,
     checkUserCredentials,
 }
 
 
 
 
-
+// from create new user
 function createUser(db, body) {
     return mongo(db.collection('Users'), 'insert', {
         username: body.username,
         hash: encryptPassword(body.password, salt),
         auth_token: {
             token: generateHash(),
-            expire: DateTime.local().plus({ month: 1 }).toISO(),
+            expire: new Date(nowPlusMonth()),
         },
         api_token: {
             token: generateHash(),
-            expire: DateTime.local().plus({ month: 1 }).toISO()
+            expire: new Date(nowPlusMonth()),
         }
     })
         .then(data => {

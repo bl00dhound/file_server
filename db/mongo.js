@@ -1,16 +1,8 @@
 
-
-const R = require('ramda');
-
-
 module.exports = (collection, method, ...args) =>
-    new Promise((resolve, reject) => {
-        const [firstArg, secondArg] = args;
-        const callback = (err, result) => {
+    new Promise((resolve, reject) => 
+        collection[method](args[0], args[1], args[2], (err, result) => {
             if (err) reject(err);
             resolve(result);
-        }
-        
-        if (!secondArg) return collection[method](firstArg, callback);
-        return collection[method](firstArg, secondArg, callback);
-    })
+        })
+    )
