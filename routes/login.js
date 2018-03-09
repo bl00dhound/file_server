@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const crypto = require('crypto');
 
 const { decryptCredentials, checkUserCredentials } = require('../middlewares/auth');
+
+router.options('/', cors());
 
 router.get('/', (req, res) => {
     console.log(req.body)

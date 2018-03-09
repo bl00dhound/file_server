@@ -8,7 +8,7 @@ const sassMiddleware = require('node-sass-middleware');
 
 const app = express();
 
-const connection = require('./db/connection');
+const { connection } = require('./db/connection');
 const { connectURL, database, user, pwd } = require('./config/config').mongo;
 
 // view engine setup
@@ -28,8 +28,8 @@ app.use(sassMiddleware({
 }));
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     next();
 });
 

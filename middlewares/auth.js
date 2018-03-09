@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const R = require('ramda');
 const { DateTime } = require('luxon');
 const { salt } = require('../config/config.json');
-const mongo = require('../db/mongo');
+const { mongo } = require('../db/connection');
 
 const generateHash = () =>
     crypto.randomBytes(32)
@@ -17,6 +17,8 @@ const nowPlusMonth = () => DateTime.local().plus({ month: 1 }).toISO()
 
 const checkExpired = (token_expire) =>
     DateTime.local() >= DateTime.fromJSDate(token_expire)
+
+// const fromNowUntilExpire = (expired) => new Date(expired) - new Date()
 
 const setNewToken = (db, user, res) =>
     mongo(
@@ -55,13 +57,13 @@ const checkUserCredentials = ({ db, body }, res) =>
 // createUser(db, body)
     mongo(db.collection('Users'), 'findOne', { username: body.username })
         .then(user => {
-            if (user.hash !== encryptPassword(body.password, salt)) throw Error('Autorization error');
+            if (user.hash !== encryptPassword(body.password, salt))
+                throw Error('Autorization error');
 
-            if (checkExpired(user.auth_token.expire)) {
+            if (checkExpired(user.auth_token.expire))
                 return setNewToken(db , user, res)
-            }
 
-            console.log(user)
+            res.cookie('auth_token', user.auth_token, { expires: user.auth_token.expire });
             return res.sendStatus(200)
         })
         .catch((err) => {
