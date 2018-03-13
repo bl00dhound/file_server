@@ -28,8 +28,13 @@ app.use(sassMiddleware({
 }));
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    // res.header('WWW-Authenticate', 'Basic realm=Authorization Required');
+    // res.header('AuthType', 'Basic')
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    // res.header('Access-Control-Allow-Methods, 'GET, POST');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    // res.header('Access-Control-Allow-Headers', 'Authorization');
     next();
 });
 

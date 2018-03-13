@@ -4,7 +4,6 @@ const setCookies = (data, textStatus, xhr) => {
     console.log('data', data)
     console.log('xhr', xhr)
     console.log('textStatus', textStatus)
-    debugger
 };
 
 const setAuthHeader = (username, password) =>
@@ -13,7 +12,7 @@ const setAuthHeader = (username, password) =>
     }
 
 const errorLogin = error => {
-    console.log('Error', error)
+    console.error('Error', error)
 };
 
 const sendFileToBackend = (file) => {
@@ -44,8 +43,9 @@ const sendAutorizationForm = (username, password) => {
     $.ajax({
         url: 'http://localhost:3000/login',
         method: 'POST',
-        xhrFields: { withCredentials: true },
+        // xhrFields: { withCredentials: true },
         beforeSend: setAuthHeader(username, password),
+        // crossDomain: true,
         success: setCookies,
         error: errorLogin
     });
