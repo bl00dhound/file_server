@@ -43,9 +43,7 @@ const sendAutorizationForm = (username, password) => {
     $.ajax({
         url: 'http://localhost:3000/login',
         method: 'POST',
-        // xhrFields: { withCredentials: true },
         beforeSend: setAuthHeader(username, password),
-        // crossDomain: true,
         success: setCookies,
         error: errorLogin
     });

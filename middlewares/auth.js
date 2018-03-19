@@ -20,6 +20,12 @@ const checkExpired = (token_expire) =>
 
 // const fromNowUntilExpire = (expired) => new Date(expired) - new Date()
 
+const setTokenCookie = (res, cookieName) =>
+    token => {
+        res.cookie(cookieName, token, { expires: token.expire });
+        return res.sendStatus(200);
+    }
+
 const setNewToken = (db, user, res) =>
     mongo(
         db.collection('Users'),
@@ -35,10 +41,8 @@ const setNewToken = (db, user, res) =>
         },
         { new: true }
     )
-        .then(result => {
-            console.log(result)
-            res.send(result)
-        })
+        .then(R.path(['value', 'auth_token']))
+        .then(setTokenCookie(res, 'auth_token'))
         .catch(err => {
             console.error(err);
             res.sendStatus(401);
@@ -61,10 +65,10 @@ const checkUserCredentials = ({ db, body }, res) =>
                 throw Error('Autorization error');
 
             if (checkExpired(user.auth_token.expire))
-                return setNewToken(db , user, res)
+                return setNewToken(db , user, res);
 
-            res.cookie('auth_token', user.auth_token, { expires: user.auth_token.expire });
-            return res.sendStatus(200)
+                
+            return setTokenCookie(res, 'auth_token')(user.auth_token);
         })
         .catch((err) => {
             console.error(err);
