@@ -8,7 +8,6 @@ const { decryptCredentials, checkUserCredentials } = require('../middlewares/aut
 router.options('/', cors());
 
 router.get('/', (req, res) => {
-    console.log(req.body)
     console.log('login cookies: ', req.cookies)
 
     res.render('login');

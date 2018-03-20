@@ -56,6 +56,26 @@ const decryptCredentials = ({ headers, body }, res, next) => {
     body.password = password;
     next();
 }
+
+const checkCookie = user => {
+    if (R.isNil(user) || R.isEmpty(user)) return false;
+    if (checkExpired(user.auth_token.expire)) return false;
+    return true;
+}
+
+const checkAuthCookie = ({ db, cookies }, res) => {
+    return mongo(
+        db.collection('Users'),
+        'findOne',
+        { 'auth_token.token': R.path(['auth_token', 'token'], cookies) }
+    )
+    .then(R.tap(console.log))
+        .then(checkCookie)
+        .catch(err => {
+            console.error(err);
+            res.sendStatus(401);
+        })
+    }
         
 const checkUserCredentials = ({ db, body }, res) => 
 // createUser(db, body)
@@ -70,7 +90,7 @@ const checkUserCredentials = ({ db, body }, res) =>
                 
             return setTokenCookie(res, 'auth_token')(user.auth_token);
         })
-        .catch((err) => {
+        .catch(err => {
             console.error(err);
             res.sendStatus(401);
         })
@@ -78,12 +98,13 @@ const checkUserCredentials = ({ db, body }, res) =>
 module.exports = {
     decryptCredentials,
     checkUserCredentials,
+    checkAuthCookie,
 }
 
 
 
 
-// from create new user
+// for creating new user
 function createUser(db, body) {
     return mongo(db.collection('Users'), 'insert', {
         username: body.username,
